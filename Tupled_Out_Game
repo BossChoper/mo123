@@ -1,0 +1,78 @@
+import random
+
+def roll_die(sides):
+    #sides var is the player entered number of die sides
+    return random.randint(1, sides)
+
+def turn(players, sides):
+    #iterates through one turn
+    #use set_players before the turns begin
+    for player in players:
+        print(f"Player {player}'s turn now \n")
+        player_score = roll_dice(sides)
+        #next line will take results of rolling dice (including tuple out) and enter it into player's info
+        players[player] += player_score
+        #adds rolled score to this player
+        # player_scores[f"Player {player}"] += player_score
+        print(f"{player} got {player_score} points \n")
+        print(f"{player} total score is {players[player]}")
+        #print out current player's info
+        # print(player_scores[f"Player {player}"])
+
+def roll_dice(sides):
+    
+    #rolling for the first three results
+    for index in range(3):
+        rolls = [roll_die(sides)]
+    #show results and compare them to find if player is Tupled Out
+    print(f"Results are {rolls}")
+    #if all rolls are the same then no points are being given
+    if len(set(rolls)):
+        print("Tupled out. No points will be added... Hate to break it to ya!")
+        return 0
+    #if two are fixed player will be asked to roll again
+    elif rolls[0] == rolls[1] or rolls[1] == rolls[2] or rolls[0] == rolls[2]:
+        answer = input("Two of the same number were rolled, you are fixed now. Reroll the odd one out?").lower()
+        if answer == "yes":
+            print("Okay, reroll")
+            if rolls[0] == rolls[1]:
+                rolls[2] = random.randint(1, sides)
+            elif rolls[1] == rolls[2]:
+                rolls[0] = random.randint(1, sides)
+            else:
+                rolls[1] = random.randint(1, sides)
+            print(f"New results are: {rolls}")
+            return sum(rolls)
+        else:
+            return sum(rolls)
+
+def check_winner(players, max_score = 50):
+    for player, score in players.items():
+        if score >= max_score:
+            return player
+
+def main():
+    print("Tupled Out is a game where you roll die three times to get points and add them together.")
+    print("If you roll three of the same numbers, you are Tupled Out and lose all points for the turn.")
+    num_players = int(input("Enter number of players: "))
+    sides = int(input("Enter the number of sides on the die: "))
+    limit_score = 50
+    for index in range(num_players):
+        players = {f"Player {index+1}": 0}
+    turns = 0
+    while turns < 5:
+        print(f"This is turn {turns+1} now")
+        #print out the current turn ^
+        turn(players, sides)
+        #checks for winner if someone reached max score
+        winner = check_winner(players, limit_score)
+        if winner:
+            print(f"{winner} had the highest score of {players[winner]}")
+            repeat_game = input("Wanna play again?").lower()
+            if repeat_game == "yes":
+                turns = 0
+            else:
+                break
+        turns += 1
+        
+main()
