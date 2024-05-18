@@ -1,8 +1,10 @@
- roll_dice():
-    """Simulates rolling three dice."""
-    return random.randint(1, 6), random.randint(1, 6), random.randint(1, 6)
+import pandas as panda
+import random
+def roll_dice():
+  """Simulates rolling three dice."""
+  return random.randint(1, 6), random.randint(1, 6), random.randint(1, 6)
 
- calculate_points(rolls):
+def calculate_points(rolls):
     """Calculates the points for a given roll."""
     if len(set(rolls)) == 1:  # If all dice show the same face
         return 0, "tuples out"  # No points for tuples out
@@ -11,7 +13,7 @@
     else:
         return sum(rolls), "regular"  # Points equal to the sum of all faces
 
- main():
+def main():
     players = ["Player 1", "Player 2"]  # List of player names
     results = {player: 0 for player in players}  # Dictionary to store each player's points
 
@@ -30,5 +32,10 @@
 
     print("\nGame Over!")
     print("Final Scores:")
+#added a print out for panda's implementation, prints results in a dataframe
+    data_frame1 = panda.DataFrame(results, index=[0])
+    print(data_frame1)
     for player, points in results.items():
         print(f"{player}: {points}")
+main()
+
